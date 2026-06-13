@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { shopData } from '../../data/shopData';
+
+// Generate dynamic paths for all categories
+export async function getStaticPaths() {
+  return shopData.map((category) => ({
+    params: { category: category.slug },
+    props: { categoryData: category },
+  }));
+}
+
+const { categoryData } = Astro.props;
+---
+
+<Layout title={categoryData.name}>
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <nav class="text-sm text-stone-500 mb-4">
+      <a href="/" class="hover:underline">Home</a> &gt; <span class="text-stone-800 font-medium">{categoryData.name}</span>
+    </nav>
+
+    <h1 class="text-4xl font-serif font-bold text-stone-900 mb-2">{categoryData.name}</h1>
+    <p class="text-stone-600 max-w-2xl mb-12">{categoryData.description}</p>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {categoryData.products.map((product) => (
+        <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-stone-100 hover:shadow-md transition flex flex-col">
+          <div class="h-64 overflow-hidden relative bg-stone-100">
+            <img 
+              src={product.image} 
+              alt={product.name} 
+              class="w-full h-full object-cover object-center hover:scale-105 transition duration-500"
+            />
+          </div>
+          <div class="p-6 flex flex-col flex-grow justify-between">
+            <div>
+              <h2 class="text-xl font-serif font-bold text-stone-900 mb-1">{product.name}</h2>
+              <p class="text-amber-800 font-semibold mb-3">${product.price.toFixed(2)}</p>
+              <p class="text-stone-600 text-sm line-clamp-2 mb-6">{product.description}</p>
+            </div>
+            <a 
+              href={`/product/${product.slug}`} 
+              class="block text-center w-full bg-stone-800 hover:bg-stone-900 text-white text-sm font-medium py-2.5 rounded transition"
+            >
+              View Product Details
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>

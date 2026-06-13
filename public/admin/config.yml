@@ -9,13 +9,37 @@ media_folder: "public/uploads"
 public_folder: "/uploads"
 
 collections:
-  - name: "blog"
-    label: "Blog"
-    folder: "src/content/blog" # Where Decap saves the Markdown files
-    extension: "md"
-    format: "frontmatter"
+  # 1. CATEGORIES COLLECTION
+  - name: "categories"
+    label: "Categories"
+    folder: "src/content/categories"
     create: true
+    slug: "{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Category Name", name: "name", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+
+  # 2. PRODUCTS COLLECTION
+  - name: "products"
+    label: "Products"
+    folder: "src/content/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Product ID", name: "id", widget: "string" }
+      - { label: "Product Name", name: "name", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Price", name: "price", widget: "number", value_type: "float" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Product Image", name: "image", widget: "image" }
+      # List widget for the array of features
+      - { label: "Features", name: "features", widget: "list", summary: "{{fields.value}}" }
+      # Relation widget links this product back to a category slug
+      - label: "Category"
+        name: "category"
+        widget: "relation"
+        collection: "categories"
+        search_fields: ["name"]
+        value_field: "slug"
+        display_fields: ["name"]

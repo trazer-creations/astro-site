@@ -1,4 +1,7 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+
 // src/pages/shop.astro
 import { getCollection } from 'astro:content';
 
@@ -22,9 +25,7 @@ const shopData = allCategories.map(categoryEntry => {
 });
 ---
 
-<html lang="en">
-  <head><title>Chocolatier Shop</title></head>
-  <body>
+<Layout title="Shop">
     {shopData.map(category => (
       <section class="category-block">
         <h2>{category.name}</h2>
@@ -44,5 +45,5 @@ const shopData = allCategories.map(categoryEntry => {
         </div>
       </section>
     ))}
-  </body>
-</html>
+	<Card />
+  </Layout>
